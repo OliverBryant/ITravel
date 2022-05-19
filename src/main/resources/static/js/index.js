@@ -61,8 +61,13 @@ const addbu = document.querySelector("#addbutton")
 const p1 = document.querySelector(".p1")
 const p2 = document.querySelector(".p2")
 let ali=1
+let ali1=1
 
 addbu.onclick=()=>{
+	if(ali===0&&ali1===0){
+		console.log(ali,ali1);
+		addbu.setAttribute('type','submit')
+	}
 	if(addbu.getAttribute('type')==='button'){
 		alert("请输入景点名称和地址")
 	}
@@ -77,11 +82,11 @@ addName.addEventListener('blur',()=>{
 	}else{
 		ali=0
 	}
+	console.log("ali     "+ali);
 })
 addName.addEventListener('focus',()=>{
 	addName.classList.remove("tip")
 	p1.style.display="none"
-	addbu.setAttribute('type',"submit")
 })
 
 where.addEventListener('blur',()=>{
@@ -89,19 +94,17 @@ where.addEventListener('blur',()=>{
 	if(val.length===0){
 		where.classList.add("tip")
 		p2.style.display="block"
-		ali=1
+		ali1=1
 	}else{
-		ali=0
+		ali1=0
 	}
+	console.log("ali1     "+ali1);
 })
 where.addEventListener('focus',()=>{
 	where.classList.remove("tip")
 	p2.style.display="none"
 })
 
-if(!ali){
-	addbu.setAttribute('type','submit')
-}
 /*-----------------------修改提示----------------------------*/
 const modName = document.querySelector("#modname")
 const modaddr = document.querySelector("#modaddr")
