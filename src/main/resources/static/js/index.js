@@ -109,6 +109,7 @@ const p3 = document.querySelector(".p3")
 const p4 = document.querySelector(".p4")
 
 modName.addEventListener('change',()=>{
+	console.log("change出发")
 	const val=modName.value
 	console.log(val);
 	if(val.length===0){
