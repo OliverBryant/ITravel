@@ -7,12 +7,10 @@ import com.example.itravel.service.TicketService;
 import com.example.itravel.service.TouristService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Time;
 import java.text.ParseException;
@@ -140,8 +138,10 @@ public class HomeController {
 
     @RequestMapping(path = "/delete", method = RequestMethod.GET)
     public String delete(String id) {
+        System.out.println(id);
         //ticketService.Update(id);
         touristService.deletaTourist(id);
+
         return "redirect:control";
 //        删除完返回control界面
     }

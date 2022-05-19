@@ -186,7 +186,7 @@
 
 					<!--删除-->
 						<tbody th:each="command:${tourist1}">
-						<form method="get"  th:action="@{/delete}" id="form1">
+						<form method="get"  th:action="@{/delete}" th:id="${command.tourist.touristattractionid}" class="fff">
 							<tr >
 								<td style="display: none"><input class="td" readonly name="id" type="text" th:value="${command.tourist.touristattractionid}"/></td>
 								<td><input class="td" readonly name="touristattractionname" type="text" th:value="${command.tourist.touristattractionname}"/></td>
@@ -197,7 +197,7 @@
 <!--								为解决介绍太长在input种无法展示的情况-->
 								<td th:utext="${command.tourist.introduction}">介绍</td>
 								<td>
-									<button id="inp1" class="btn btn-outline-secondary btn-sm">删除</button>
+									<button th:id="${command.tourist.touristattractionid}" type="button" class="btn btn-outline-secondary btn-sm debtn">删除</button>
 									<button id="inp2" class="btn btn-outline-secondary btn-sm" type="button" th:value="${command.tourist.touristattractionname}">修改</button>
 								</td>
 							</tr>

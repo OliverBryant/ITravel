@@ -39,11 +39,46 @@ function publish() {
 
 
 /*-----------------删除景点时的提示信息------------------------*/
-const btn=document.querySelectorAll("#inp1")
+/*let btn=document.querySelectorAll(".debtn")
+let deleteId
 btn.forEach((a)=>{
 	a.onclick=()=>{
+		console.log(btn.values())
 		if(confirm("确定要删除？")){
-			document.querySelector("#formxx").submit()
+			// document.querySelector("#formxx").submit()
+			deleteId = a.getAttribute('id')
+			console.log(deleteId)
+			$.ajax({
+				type: "get",
+				dataType: "json",
+				url: "/itravel/delete",
+				data: {'id':deleteId},
+				success: function (result) {
+					console.log(result);
+				},
+				error: function () {
+					console.log("异常");
+				}
+			})
+		}
+	}
+})*/
+
+let btn=document.querySelectorAll(".debtn")
+let abc=document.querySelectorAll(".fff")
+let deleteId
+btn.forEach((a)=>{
+	a.onclick=()=>{
+		console.log(btn.values())
+		if(confirm("确定要删除？")){
+			// document.querySelector("#formxx").submit()
+			deleteId = a.getAttribute('id')
+			console.log(deleteId)
+			abc.forEach((item)=>{
+				if(item.getAttribute('id')===deleteId){
+					item.submit()
+				}
+			})
 		}
 	}
 })
