@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/ded//mybatis-3-mapper.dtd">
+<mapper namespace="com.example.itravel.dao.OrderStatusMapper">
+
+<select id="selectView" resultType="OrderStatus" >
+    SELECT OrderTouristName,SUM(SumPrice) as sumPrice ,SUM(PurchasNums) as purchasNum
+    FROM order_info
+    GROUP BY OrderTouristName
+    ORDER BY SumPrice DESC;
+</select>
+
+<select id="selectSum" resultType="OrderStatus" >
+    SELECT SUM(PurchasNums) as purchasNum,SUM(SumPrice) as sumPrice,COUNT(*) as orderNum
+    FROM order_info;
+</select>
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/ded//mybatis-3-mapper.dtd">
+<mapper namespace="com.example.itravel.dao.TouristMapper">
+
+    <select id="selectTourist" resultType="Tourist">
+        SELECT touristattractionid,touristattractionname,address,openingtime,closetime,introduction,region.RegionName
+        FROM touristattraction,region
+        WHERE touristattraction.RegionID=region.RegionID
+        <if test="limit!=0">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="selectTouristByName" resultType="Tourist">
+        SELECT TouristAttractionName,address,openingtime,closetime,introduction,regionName
+        from touristattraction,region
+        WHERE touristattraction.RegionID=region.RegionID and TouristAttractionName LIKE "%"#{name}"%";
+    </select>
+    <select id="selectTouristByArea" resultType="Tourist">
+        SELECT  TouristAttractionName,address,openingtime,closetime,introduction,regionName
+        from touristattraction,region
+        WHERE touristattraction.RegionID=region.RegionID and regionName LIKE "%"#{area}"%";
+    </select>
+
+    <select id="selectNum" resultType="int">
+        SELECT count(*)
+        FROM touristattraction;
+    </select>
+
+    <update id="updateTourist">
+        UPDATE touristattraction
+        set TouristAttractionName = #{name},Address=#{address},OpeningTime=#{openTime},CloseTime=#{closeTime},Introduction=#{intro},
+        RegionID=
+        (SELECT RegionID
+        FROM region
+        WHERE RegionName =#{Region}
+        )
+        where TouristAttractionID=#{id};
+    </update>
+
+    <delete id="deleteTourist">
+        DELETE
+        FROM touristattraction
+        WHERE TouristAttractionID = #{touristId};
+    </delete>
+
+    <insert id="insertTourist" parameterType="Tourist">
+        INSERT
+        INTO touristattraction(touristattractionID,touristattractionName,
+        address,openingTime,closeTime,introduction,RegionID)
+        VALUES(#{touristattractionid},#{touristattractionname},#{address},#{openingTime},#{closeTime},#{introduction},
+        (SELECT RegionID
+        FROM region
+        WHERE RegionName = #{regionname})
+        );
+    </insert>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/ded//mybatis-3-mapper.dtd">
+<mapper namespace="com.example.itravel.dao.DirectorMapper">
+
+<select id="selectByAccount" resultType="com.example.itravel.entity.Director">
+    select Account,Phone,Email,Name,Level,Password from director
+    where Account = #{account};
+
+</select>
+    <update id="updateInfo" >
+        update director set name = #{name},phone = #{phone},email=#{email} where account =#{account}
+    </update>
+
+    <update id="updatePassword">
+        update director set password = #{password} where account =#{account}
+    </update>
+
+
+</mapper>

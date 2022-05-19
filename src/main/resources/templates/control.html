@@ -1,0 +1,544 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon" href="https://static.nowcoder.com/images/logo_87_87.png"/>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+	<link rel="stylesheet" th:href="@{/css/global.css}" />
+	<link rel="stylesheet" th:href="@{/css/contain.css}"/>
+	<!--  <link rel="stylesheet" href="../static/table.css" />-->
+	<style>
+		a:hover {text-decoration:none;}
+		.nav{
+
+			display: flex;
+			justify-content: center;
+		}
+		li{
+			list-style: none;
+		}
+		table{
+			margin-top: 5px;
+			max-width: 980px;
+			width: 100%;
+			border-collapse: collapse;
+		}
+		table thead{
+			text-align: left;
+		}
+		table tr{
+			border-bottom: black 1px solid;
+			height: 30px;
+		}
+		table tr td{
+			max-width: 100px;
+			/*width: 100%;*/
+		}
+		.inp {
+			float: left;
+			border: 1px rgb(5, 152, 219) solid;
+			background-color: rgb(183, 221, 238);
+		}
+		.inp:hover{
+			background-color:blue;
+			color: white;
+		}
+		.inp3{
+			width: 150px;
+			height: 50px;
+			border: 1px rgb(5, 152, 219) solid;
+			background-color: rgb(183, 221, 238);
+		}
+		.inp3:hover{
+			background-color:blue;
+			color: white;
+		}
+		.td {
+			width: 100%;
+			outline: none;
+			border: 0px;
+		}
+		#white_content {
+			display: none;
+			position: absolute;
+			top: 0%;
+			left: 0%;
+			width: 100%;
+			height: 100%;
+			border: 16px solid grey;
+			background-color: white;
+			z-index: 1002;
+			overflow: auto;
+		}
+
+		.white_content{
+			display: none;
+			position: absolute;
+			top: 0%;
+			left: 0%;
+			width: 100%;
+			height: 100%;
+			border: 16px solid grey;
+			background-color: white;
+			z-index: 1002;
+			overflow: auto;
+		}
+		.tip {
+			border: red 1px solid;
+		}
+
+		.p {
+			display: none;
+			color: red;
+		}
+	</style>
+	<title>景点管理</title>
+</head>
+<body>
+<div class="nk-container">
+	<!-- 头部 -->
+	<header class="bg-dark sticky-top" th:fragment="header">
+		<div class="contain" >
+			<!-- 导航 -->
+			<nav class="navbar navbar-expand-lg navbar-dark">
+				<!-- logo -->
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<!-- 功能 -->
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item ml-3 btn-group-vertical" th:if="${session.loginUser}!=null">
+							<a class="nav-link" th:href="@{/index}">查看景点</a>
+						</li>
+						<li class="nav-item ml-3 btn-group-vertical" th:if="${session.loginUser}!=null">
+							<a class="nav-link" th:href="@{/control}">景点管理</a>
+						</li>
+						<li class="nav-item ml-3 btn-group-vertical" th:if="${session.loginUser}!=null">
+							<a class="nav-link position-relative" th:href="@{/orderIfn}">订单信息</a>
+						</li>
+						<li class="nav-item ml-3 btn-group-vertical" th:if="${session.loginUser}!=null">
+							<a class="nav-link" th:href="@{/operating}">经营状况</a>
+						</li>
+						<li class="nav-item ml-3 btn-group-vertical" th:if="${session.loginUser}==null">
+							<a class="nav-link" th:href="@{/please}">查看景点</a>
+						</li>
+						<li class="nav-item ml-3 btn-group-vertical" th:if="${session.loginUser}==null">
+							<a class="nav-link" th:href="@{/please}">景点管理</a>
+						</li>
+						<li class="nav-item ml-3 btn-group-vertical" th:if="${session.loginUser}==null">
+							<a class="nav-link position-relative" th:href="@{/please}">订单信息</a>
+						</li>
+						<li class="nav-item ml-3 btn-group-vertical" th:if="${session.loginUser}==null">
+							<a class="nav-link" th:href="@{/please}">经营状况</a>
+						</li>
+						<li class="nav-item ml-3 btn-group-vertical" th:if="${session.loginUser}==null">
+							<a class="nav-link" th:href="@{/login}" >登录</a>
+						</li>
+						<li class="nav-item ml-3 btn-group-vertical dropdown" th:if="${session.loginUser}!=null">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="http://images.nowcoder.com/head/1t.png" class="rounded-circle" style="width:30px;"/>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item text-center" th:href="@{/setting}">账号设置</a>
+								<a class="dropdown-item text-center" th:href="@{/updatePassword}">密码修改</a>
+								<a class="dropdown-item text-center" th:href="@{/logout}">退出登录</a>
+								<div class="dropdown-divider"></div>
+							</div>
+						</li>
+					</ul>
+
+				</div>
+			</nav>
+		</div>
+	</header>
+
+	<!-- 内容 -->
+	<div class="main">
+		<div class="container">
+			<!--        <div class="position-relative">-->
+			<!-- 筛选条件 -->
+			<!--          <ul class="nav nav-tabs mb-3">-->
+			<!--            <li class="nav-item" >-->
+			<!--              <a class="nav-link active" id="nav1" th:href="@{/index}">景点管理</a>-->
+			<!--            </li>-->
+			<!--            <li class="nav-item" >-->
+			<!--              <a class="nav-link" id="nav2" th:href="@{/ticket}">门票管理</a>-->
+			<!--            </li>-->
+			<!--          </ul>-->
+			<!--        </div>-->
+
+			<div id="contar" class="mb-3" >
+				<div class="attrection" >
+					<table>
+						<thead>
+						<tr>
+							<th>名称</th>
+							<th>地址</th>
+							<th>营业时间</th>
+							<th>结束时间</th>
+							<th>介绍</th>
+							<th>功能</th>
+						</tr>
+						</thead>
+
+					<!--删除-->
+						<tbody th:each="command:${tourist1}">
+						<form method="get"  th:action="@{/delete}" id="form1">
+							<tr >
+								<td style="display: none"><input class="td" readonly name="id" type="text" th:value="${command.tourist.touristattractionid}"/></td>
+								<td><input class="td" readonly name="touristattractionname" type="text" th:value="${command.tourist.touristattractionname}"/></td>
+								<td><input class="td" readonly name="address" type="text" th:value="${command.tourist.address}"/></td>
+								<td><input class="td" readonly name="openingTime" type="text" th:value="${command.tourist.openingTime}"></td>
+								<td><input class="td" readonly name="closeTime" type="text" th:value="${command.tourist.closeTime}"></td>
+<!--								<td><input class="td" readonly name="introduction" type="text" th:value="${command.tourist.introduction}"/></td>-->
+<!--								为解决介绍太长在input种无法展示的情况-->
+								<td th:utext="${command.tourist.introduction}">介绍</td>
+								<td>
+									<button id="inp1" class="btn btn-outline-secondary btn-sm">删除</button>
+									<button id="inp2" class="btn btn-outline-secondary btn-sm" type="button" th:value="${command.tourist.touristattractionname}">修改</button>
+								</td>
+							</tr>
+						</form>
+
+						<!--修改-->
+						<form method="post" th:action="@{/update}">
+							<div id="white_content" th:class="${command.tourist.touristattractionname}">
+								<div style="display: none">
+									<input class="td" readonly name="id" type="text" th:value="${command.tourist.touristattractionid}"/>
+								</div>
+								<div class="form-row" style="margin-left: 300px;margin-right: 300px;margin-top: 100px">
+									<div class="form-group col-md-6">
+										<label for="modname">景点名称</label>
+										<input type="text" id="modname" class="form-control" th:value="${command.tourist.touristattractionname}" name="name">
+										<p class="p p3">内容不能为空</p>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="modaddr">景点地址</label>
+										<input type="text" id="modaddr" class="form-control" name="address" th:value="${command.tourist.address}">
+										<p class="p p4">内容不能为空</p>
+									</div>
+								</div>
+								<div class="form-group" style="margin-left: 300px;margin-right: 300px;">
+									<label>景点介绍</label>
+									<input type="text" class="form-control" name="intro" id="exampleFormControlInput1"th:value="${command.tourist.introduction}" >
+								</div>
+								<div class="form-row" style="margin-left: 300px;margin-right: 300px;">
+									<div  class="form-group col-md-4">
+										<label>营业时间</label>
+										<input name="openTime" id="up_open" th:value="${command.tourist.openingTime}" type="time" class="form-control">
+									</div>
+									<div  class="form-group col-md-4">
+										<label>结束时间</label>
+										<input name="closeTime" id="up_close" th:value="${command.tourist.closeTime}" type="time" class="form-control">
+									</div>
+								</div>
+
+								<div style="display: none">
+									<input class="td" readonly name="Region" type="text" th:value="${command.tourist.regionname}"/>
+								</div>
+
+								<div class="form-row" style="margin-left: 300px;margin-right: 300px;margin-top: 30px">
+									<div style="margin-right: 150px">
+										<p>
+											<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample">
+												成人票
+											</button>
+										</p>
+										<div class="collapse" id="collapseExample1" style="position: absolute;z-index: 10">
+											<div class="card card-body">
+												<label>数量：</label><input class="update_inpu"  type="number" min="0" max="10000" name="num111" th:value="${command.tourist.adultnum}">
+												<label>价格：</label><input class="update_inpu"  type="number" min="0" max="10000"  name="price11" th:value="${command.tourist.adultprice}">
+											</div>
+										</div>
+									</div>
+
+									<div style="margin-right: 150px">
+										<p>
+											<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample_stu1" aria-expanded="false" aria-controls="collapseExample">
+												学生票
+											</button>
+										</p>
+										<div class="collapse" id="collapseExample_stu1" style="position: absolute;z-index: 10">
+											<div class="card card-body">
+												<label>数量：</label><input class="update_inpu"  type="number" min="0" max="10000"   name="num222" th:value="${command.tourist.studentnum}">
+												<label>价格：</label><input class="update_inpu"  type="number" min="0" max="10000"  name="price22" th:value="${command.tourist.studentprice}">
+											</div>
+										</div>
+									</div>
+
+									<div style="margin-right: 150px">
+										<p>
+											<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample_ch1" aria-expanded="false" aria-controls="collapseExample">
+												儿童票
+											</button>
+										</p>
+										<div class="collapse" id="collapseExample_ch1" style="position: absolute;z-index: 10">
+											<div class="card card-body" >
+												<label>数量：</label><input class="update_inpu"  type="number" min="0" max="10000"   name="num333" th:value="${command.tourist.childnum}">
+												<label>价格：</label><input class="update_inpu"  type="number" min="0" max="10000" name="price33" th:value="${command.tourist.childprice}">
+											</div>
+										</div>
+									</div>
+
+									<div>
+										<p>
+											<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample_old1" aria-expanded="false" aria-controls="collapseExample">
+												老年票
+											</button>
+										</p>
+										<div class="collapse" id="collapseExample_old1" style="position: absolute;z-index: 10">
+											<div class="card card-body">
+												<label>数量：</label><input class="update_inpu"  type="number" min="0" max="10000"  name="num444" th:value="${command.tourist.oldnum}">
+												<label>价格：</label><input class="update_inpu"  type="number" min="0" max="10000"  name="price44" th:value="${command.tourist.oldprice}">
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row" style="margin-left: 300px;margin-right: 300px; margin-top: 200px">
+									<button type="submit" id="button" class="btn btn-primary"  style="margin-left: 80%; margin-right: 30px">修改</button>
+									<button type="button" id="Qbutton" class="btn btn-primary">取消</button>
+								</div>
+							</div>
+						</form>
+
+
+						<!--              增加部分-->
+						<form  method="post" th:action="@{/add}"`>
+							<div id="Add" class="white_content">
+							<div class="form-row" style="margin-left: 300px;margin-right: 300px;margin-top: 100px">
+								<div class="form-group col-md-6">
+									<label for="addname">景点名称</label>
+									<input type="text" class="form-control" id="addname" placeholder="请输入景点名称" name="touristname">
+									<p class="p p1">内容不能为空</p>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="addwhere">景点地址</label>
+									<input type="text" class="form-control" id="addwhere" placeholder="请输入景点地址" name="touristaddress">
+									<p class="p p2">内容不能为空</p>
+								</div>
+							</div>
+							<div class="form-group" style="margin-left: 300px;margin-right: 300px;">
+								<label>景点介绍</label>
+								<textarea class="form-control" id="exampleFormControlTextarea1" name="introduction" rows="3" placeholder="有趣的介绍能吸引更多游客哦"></textarea>
+							</div>
+							<div class="form-row" style="margin-left: 300px;margin-right: 300px;">
+								<div class="form-group col-md-4">
+									<label for="inputState">地区</label>
+									<select id="inputState" class="form-control" name="region">
+										<option selected>济南市</option>
+										<option>北京市</option>
+										<option>青岛市</option>
+										<option>淄博市</option>
+										<option>枣庄市</option>
+										<option>东营市</option>
+										<option>烟台市</option>
+										<option>潍坊市</option>
+										<option>济宁市</option>
+										<option>泰安市</option>
+									</select>
+								</div>
+								<div  class="form-group col-md-4">
+									<label>营业时间</label>
+									<input name="opentime" id="add_open" type="time" class="form-control" value="08:00" >
+								</div>
+								<div  class="form-group col-md-4">
+									<label>结束时间</label>
+									<input name="closetime" id="add_close" type="time" class="form-control" value="18:00">
+								</div>
+							</div>
+
+							<div class="form-row" style="margin-left: 300px;margin-right: 300px;margin-top: 30px">
+								<div style="margin-right: 150px">
+									<p>
+										<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+											成人票
+										</button>
+									</p>
+									<div class="collapse" id="collapseExample" style="position: absolute;z-index: 10">
+										<div class="card card-body">
+											<label>数量：</label><input class="update_inpu"  type="number" min="0" max="10000" name="adultnum" value="0">
+											<label>价格：</label><input class="update_inpu"  type="number" min="0" max="10000"  name="adultticket" value="0">
+										</div>
+									</div>
+								</div>
+								<div style="margin-right: 150px">
+									<p>
+										<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample_stu" aria-expanded="false" aria-controls="collapseExample">
+											学生票
+										</button>
+									</p>
+									<div class="collapse" id="collapseExample_stu" style="position: absolute;z-index: 10">
+										<div class="card card-body">
+											<label>数量：</label><input class="update_inpu"  type="number" min="0" max="10000"   name="studentnum" value="0">
+											<label>价格：</label><input class="update_inpu"  type="number" min="0" max="10000"  name="studentticket" value="0">
+										</div>
+									</div>
+								</div>
+
+								<div style="margin-right: 150px">
+									<p>
+										<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample_ch" aria-expanded="false" aria-controls="collapseExample">
+											儿童票
+										</button>
+									</p>
+									<div class="collapse" id="collapseExample_ch" style="position: absolute;z-index: 10">
+										<div class="card card-body" >
+											<label>数量：</label><input class="update_inpu"  type="number" min="0" max="10000"   name="childnum" value="0">
+											<label>价格：</label><input class="update_inpu"  type="number" min="0" max="10000" name="childtiket" value="0">
+										</div>
+									</div>
+								</div>
+
+								<div>
+									<p>
+										<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample_old" aria-expanded="false" aria-controls="collapseExample">
+											老年票
+										</button>
+									</p>
+									<div class="collapse" id="collapseExample_old" style="position: absolute;z-index: 10">
+										<div class="card card-body">
+											<label>数量：</label><input class="update_inpu"  type="number" min="0" max="10000"  name="oldnum" value="0">
+											<label>价格：</label><input class="update_inpu"  type="number" min="0" max="10000"  name="oldticket" value="0">
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-row" style="margin-left: 300px;margin-right: 300px; margin-top: 200px">
+								<button type="button" id="addbutton" class="btn btn-primary" οnclick=return checkadd(this.form) style="margin-left: 80%; margin-right: 30px">增加</button>
+								<button type="button" id="addQbutton" class="btn btn-primary">取消</button>
+							</div>
+							</div>
+						</form>
+						</tbody>
+					</table>
+
+					<button id="inp3" class="btn btn-secondary">增加</button>
+
+<!--					分页-->
+					<div class="nav">
+						<nav class="mt-5" th:if="${page.getRows()>0}">
+							<ul class="pagination justify-content-center">
+								<li class="page-item">
+									<a class="page-link" th:href="@{${page.getPath()}(current=1)}">首页</a>
+								<li th:class="|page-item ${page.current==1?'disabled':''}|">
+									<a class="page-link" th:href="@{${page.getPath()}(current=${page.getCurrent()-1})}">上一页</a>
+								<li th:class="|page-item ${page.current==i?'active': ''}|" th:each="i:${#numbers.sequence(page.getFrom(),page.getTo())}">
+									<a class="page-link" th:href="@{${page.getPath()}(current=${i})}" th:text="${i}">1</a>
+								<li th:class="|page-item ${page.current==page.getTotal()?'disabled': ''}|">
+									<a class="page-link" th:href="@{${page.getPath()}(current=${page.getCurrent()+1})}">下一页</a>
+								<li class="page-item">
+									<a class="page-link" th:href="@{${page.getPath()}(current=${page.getTotal()})}">末页</a>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script>
+	console.log("引入按钮成功");
+	var up_open=document.getElementById("up_open");
+	var up_close=document.getElementById("up_close");
+	var add_open=document.getElementById("add_open");
+	var add_close=document.getElementById("add_close");
+	var but=document.getElementById("button");//修改按钮
+	var but2=document.getElementById("addbutton")//增加按钮
+	up_open.addEventListener("blur",tan1);
+	up_close.addEventListener("blur",tan1);
+	add_open.addEventListener("blur",tan2);
+	add_close.addEventListener("blur",tan2);
+
+	function tan1(){
+		console.log("tan1点击");
+		console.log(this.value);
+		var reg = /^(20|21|22|23|[0-1]\d):[0-5]\d$/;
+		// var regExp =newRegExp(reg);
+		if(!reg.test(this.value)){
+			alert("时间格式不正确，正确格式为：12:00");
+			but.setAttribute("type","button");
+		}
+		else{
+			// alert("修改正确");
+			but.setAttribute("type","submit");
+		}
+	}
+	function tan2(){
+		var reg = /^(20|21|22|23|[0-1]\d):[0-5]\d$/;
+		// var regExp =newRegExp(reg);
+		if(!reg.test(this.value)){
+			alert("时间格式不正确，正确格式为：12:00");
+			but2.setAttribute("type","button");
+		}
+		else{
+			// alert("添加正确");
+			but2.setAttribute("type","submit");
+		}
+	}
+</script>
+
+<script type="text/javascript">
+	console.log("引入index成功");
+	var i=document.querySelectorAll("#inp2");
+	var div=document.querySelectorAll("#white_content");
+	console.log(div.values());
+	for( var a=0;a<i.length;a++){
+		i[a].addEventListener("click",update);
+	}
+
+	function update(){
+		console.log("修改");
+		var i=0;
+		for(i;i<div.length;i++)
+		{
+			if(this.value==div[i].className) {
+				break;
+			}
+		}
+		console.log();
+		var str="."+div[i].className;
+		console.log(str);
+		document.querySelector(str).style.display='block';
+	};
+
+	var qbutton=document.querySelectorAll("#Qbutton")
+	for(let i=0;i<qbutton.length;i++)
+	{
+		qbutton[i].addEventListener("click",quite);
+	}
+	function quite(){
+		for(let i=0;i<qbutton.length;i++){
+			if(div[i].style.display=="block")
+				div[i].style.display = 'none';
+		}
+	}
+
+	var qu=document.getElementById("addQbutton");
+	var addbutton=document.querySelector("#inp3");
+
+	addbutton.addEventListener("click",add);
+	function add(){
+		console.log("add被点了")
+		document.getElementById("Add").style.display="block";
+	}
+	qu.onclick= function (){
+		document.getElementById("Add").style.display="none";
+	}
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/global.js}"></script>
+<script th:src="@{/js/index.js}"></script>
+<!--<script src="../static/nav.js"></script>-->
+
+</body>
+</html>

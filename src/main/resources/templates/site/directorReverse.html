@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon" href="https://static.nowcoder.com/images/logo_87_87.png"/>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+	<link rel="stylesheet" th:href="@{/css/global.css}" />
+	<link rel="stylesheet" th:href="@{/css/login.css}" />
+	<title>登录</title>
+</head>
+<body>
+<div class="nk-container">
+	<!-- 内容 -->
+	<div class="main">
+		<div class="container pl-5 pr-5 pt-3 pb-3 mt-3 mb-3">
+			<h3 class="text-center text-info border-bottom pb-3">账&nbsp;&nbsp;号&nbsp;&nbsp;设&nbsp;&nbsp;置</h3>
+			<form class="mt-5" method="post" th:action="@{/setting}">
+				<div class="form-group row">
+					<label for="name" class="col-sm-2 col-form-label text-right">姓名:</label>
+					<div class="col-sm-10">
+						<input type="text" th:class="|form-control ${nameMsg!=null?'is-invalid':''}|" id="name" name="name" th:value="${director.name}" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="phone" class="col-sm-2 col-form-label text-right">手机号:</label>
+					<div class="col-sm-10">
+						<input type="text" th:class="form-control" id="phone" name="phone" th:value="${director.phone}" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="email" class="col-sm-2 col-form-label text-right">邮箱:</label>
+					<div class="col-sm-10">
+						<input type="text" th:class="form-control" id="email" name="email" th:value="${director.email}" required>
+						<div class="invalid-feedback" th:text="${emailMsg}">  <!--若email格式不为xx@xx-->
+							请检查您的邮箱地址!
+						</div>
+					</div>
+				</div>
+				<!-- <div class="form-group row mt-4">
+                    <label for="verifycode" class="col-sm-2 col-form-label text-right">验证码:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control is-invalid" id="verifycode" placeholder="请输入验证码!">
+                        <div class="invalid-feedback">
+                            验证码不正确!
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <img src="../img/captcha.png" style="width:100px;height:40px;" class="mr-2"/>
+                        <a href="javascript:;" class="font-size-12 align-bottom">刷新验证码</a>
+                    </div>
+                </div>				 -->
+				<!-- <div class="form-group row mt-4">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-10">
+                        <input type="checkbox" id="remember-me" checked="checked">
+                        <label class="form-check-label" for="remember-me">记住我</label>
+                        <a href="forget.html" class="text-danger float-right">忘记密码?</a>
+                    </div>
+                </div>				 -->
+				<div class="form-group row mt-4">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-10 text-center">
+						<button type="submit" class="btn btn-info text-white form-control" id="fix">确认修改</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+	// var num=document.getElementById("phone").getAttribute("value").length;
+	var phone=document.getElementById("phone");
+	var but=document.getElementById("fix");
+	phone.addEventListener("blur",tan);
+	function tan(){
+		console.log(this.value.length);
+		if(this.value.length!=11){
+			alert("手机号必须为11位！！");
+			but.setAttribute("type","button");
+		}
+		else{
+			but.setAttribute("type","submit");
+		}
+	}
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script src="../js/global.js"></script>
+</body>
+</html>

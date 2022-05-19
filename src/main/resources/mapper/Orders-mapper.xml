@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/ded//mybatis-3-mapper.dtd">
+<mapper namespace="com.example.itravel.dao.OrdersMapper">
+
+    <select id="selectAll" resultType="OrdersInfo">
+        select userphone,username,orderticketprice,ordertouristname,
+        ordertickettypename,purchasnums,sumprice,ordertime,orderstatus
+        from order_info;
+    </select>
+
+    <select id="selectByPhone" resultType="OrdersInfo">
+        SELECT *
+        FROM order_info
+        WHERE UserPhone = #{phone};
+
+    </select>
+
+    <select id="selectByName" resultType="OrdersInfo">
+        SELECT *
+        FROM order_info
+        WHERE OrderTouristName LIKE "%"#{name}"%";
+
+    </select>
+
+</mapper>
+
